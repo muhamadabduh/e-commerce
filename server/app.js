@@ -8,7 +8,8 @@ require('dotenv').config()
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var itemsRouter = require('./routes/items');
-var categoryRouter = require('./routes/categories')
+var categoriesRouter = require('./routes/categories');
+var cartsRouter = require('./routes/carts')
 
 var cors = require('cors')
 var mongoose = require('mongoose');
@@ -34,8 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/items', itemsRouter);
-app.use('/categories', categoryRouter )
-
+app.use('/categories', categoriesRouter )
+app.use('/carts', cartsRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

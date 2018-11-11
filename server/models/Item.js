@@ -6,7 +6,8 @@ const itemSchema = new mongoose.Schema({
     description: String,
     price: Number,
     stock: Number,
-    img: String
+    img: String,
+    owner: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
 })
 
 const Item = mongoose.model('Item', itemSchema)

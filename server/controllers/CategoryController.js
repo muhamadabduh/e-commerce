@@ -4,6 +4,7 @@ const Category = require('../models/Category')
 class CategoryController{
     static index(req,res){
         Category.find()
+            .populate('items')
             .then(categories=>{
                 res.status(200).json({
                     categories: categories
@@ -57,7 +58,6 @@ class CategoryController{
         Category.update({
             _id : req.params.id
         }, {
-            name: req.body.name,
             $push: {items: req.body.items}
         })
             .then(success=>{
@@ -74,13 +74,13 @@ class CategoryController{
     }
 
     static show(req,res){
-        Category.find({
-            name: req.params.name
+        Category.findOne({
+            _id: req.params.id
         })  
             .populate('items')
-            .then(categories=>{
+            .then(category=>{
                 res.status(200).json({
-                    categories: categories
+                    category: category
                 })
             })
             .catch(err=>{

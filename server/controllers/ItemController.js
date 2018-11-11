@@ -24,13 +24,18 @@ class ItemController {
     }
 
     static index(req,res){
+        
         Item.find()
+        .populate('category')
+        .populate('owner')
         .then(items=>{
+            console.log('=====', items)
             res.status(200).json({
                 items:items
             })
         })
         .catch(err=>{
+            console.log(err)
             res.status(500).json({
                 error: err.message,
                 message: "error fetching items data"
