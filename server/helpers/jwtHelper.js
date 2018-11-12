@@ -11,5 +11,6 @@ class jwtHelper{
 }
 
 // console.log(jwtHelper.encode({name:"abduh"}))
+// console.log(jwtHelper.decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'))s
 
 module.exports = jwtHelper

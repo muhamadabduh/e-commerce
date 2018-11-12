@@ -1,22 +1,27 @@
 const Item = require('../models/Item')
+const jwtHelper = require('../helpers/jwtHelper')
+const jwt = require('jsonwebtoken')
 
 class ItemController {
     static create(req,res){
+        let user = jwtHelper.decode(req.headers['token'])
         Item.create({
             name: req.body.name,
             description: req.body.description,
             price: req.body.price,
             stock: req.body.stock,
             img: req.body.img,
-            category: req.body.category
+            category: req.body.category,
+            owner: user._id
         })
         .then(item=>{
-            res.status(200).json({
+            res.status(201).json({
                 item: item,
                 message: "succesfully create new item"
             })
         })
         .catch(err=>{
+            console.log(err)
             res.status(500).json({
                 err: err.message
             })
@@ -44,16 +49,18 @@ class ItemController {
     }
 
     static show(req,res){
-        Item.findOne({
-            _id: req.params.id
+        let user = jwtHelper.decode(req.headers['token'])
+        console.log(user)
+        Item.find({
+            owner: user._id
         })
-            .then(item=>{
+            .then(items=>{
                 res.status(200).json({
-                    item: item
+                    items: items
                 })
             })
             .catch(err=>{
-                res.status(200).json({
+                res.status(500).json({
                     err: err.message,
                     message: "error fetching data item"
                 })
