@@ -1,6 +1,7 @@
 const Item = require('../models/Item')
 const jwtHelper = require('../helpers/jwtHelper')
 const jwt = require('jsonwebtoken')
+const Image = require('../models/Image')
 
 class ItemController {
     static create(req,res){
@@ -97,6 +98,33 @@ class ItemController {
                     err: err.message
                 })
             })
+    }
+
+    static uploadImage(req,res){
+      return new Promise((resolve,reject)=>{
+          Image.create({
+            url : req.file.cloudStoragePublicUrl
+          })
+            .then(image=>{
+                resolve({
+                    image: image,
+                    message: 'upload image success'
+                })
+            })
+            .catch(err=>{
+                reject(err)
+            })
+      })  
+    }
+
+    static getImage(req, res) {
+        Image.find()
+        .then(data => {
+            res.status(200).json(data)
+        })
+        .catch(err => {
+            res.status(500).json(err)
+        })
     }
 }
 
